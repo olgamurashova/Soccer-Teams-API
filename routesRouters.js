@@ -28,9 +28,9 @@ lionsRouter.get('/', (req, res, next) => {
 //2 getting a single player by id
 
 lionsRouter.get('/:id', (req, res, next) => {
-    const player = players[req.params.id];
-    if (player) {
-        res.send(player);
+    const playerId = req.params.id;
+    if (playerId) {
+        res.send(playerId);
     } else {
         res.status(404).send();
     }
@@ -50,15 +50,17 @@ lionsRouter.get('/:id/name', (req, res, next) => {
 //4 updating a player eg. /players/1?name=liambloom&age=32&position=goalkeeper
 
 lionsRouter.put('/:id', (req, res, next) => {
+    const playerId = Number(req.params.id);
     const newPlayer = req.query;
-    newPlayer = players[req.id];
+    players[playerId] = newPlayer;
+    if (!newPlayer === -1);
     res.send(newPlayer); 
 });
 
 // 5 updating a player's name/age/position
 lionsRouter.put('/:id/name', (req, res, next) => {
-    const playerId = req.params.id;
-    const playerName = req.query;
+    const playerId = Number(req.params.id);
+    const playerName = req.body.name;
     players[playerId] = playerName;
     res.send(players[playerId]);
 
@@ -66,17 +68,27 @@ lionsRouter.put('/:id/name', (req, res, next) => {
 
 //6 create a new player
 lionsRouter.post('/:id', (req, res, next) => {
-    const newPlayer = req.query;
-    newPlayer = players[req.params.id];
-    res.send(newPlayer);
+    const newPlayer = req.query.player;
+    if(newPlayer.name && newPlayer.age && newPlayer.position && newPlayer.goals) {
+        newPlayer.id = nextPlayerid++;
+        players.push(newPlayer);
+        res.send(newPlayer);
+    } else {
+        res.status(400).send();
+    }  
 });
 
 //7 delete a player
 lionsRouter.delete('/:id', (req, res, next) => {
-    const deletedPlayer = players[req.params.id]
-    return delete deletedPlayer;
-    res.status(204).send();
-})
+    const playerId =  Number(req.params.id);
+    const playerIndex = players.findIndex(player => playerId === player.id);
+    if (!playerIndex === -1) {
+        players.splice(playerIndex, 1);
+        res.status(204).send();
+    } else {
+        res.status(404).send();
+    }
+});
 
 //teamTigers
 
@@ -101,13 +113,14 @@ tigersRouter.get('/', (req, res, next) => {
 //2 getting a single player by id
 
 tigersRouter.get('/:id', (req, res, next) => {
-    const player = players[req.params.id];
-    if (player) {
-        res.send(player);
+    const playerId = req.params.id;
+    if (playerId) {
+        res.send(playerId);
     } else {
         res.status(404).send();
     }
 });
+    
 
 //3 getting a player by their name
 
@@ -123,32 +136,43 @@ tigersRouter.get('/:id/name', (req, res, next) => {
 //4 updating a player eg. /players/1?name=liambloom&age=32&position=goalkeeper
 
 tigersRouter.put('/:id', (req, res, next) => {
+    const playerId = Number(req.params.id);
     const newPlayer = req.query;
-    newPlayer = players[req.id];
+    players[playerId] = newPlayer;
+    if (!newPlayer === -1);
     res.send(newPlayer); 
 });
 
 // 5 updating a player's name/age/position
 tigersRouter.put('/:id/name', (req, res, next) => {
-    const playerId = req.params.id;
-    const playerName = req.query;
+    const playerId = Number(req.params.id);
+    const playerName = req.body;
     players[playerId] = playerName;
     res.send(players[playerId]);
-
 });
 
 //6 create a new player
 tigersRouter.post('/:id', (req, res, next) => {
     const newPlayer = req.query;
-    newPlayer = players[req.params.id];
-    res.send(newPlayer);
+    if(newPlayer.name && newPlayer.age && newPlayer.position && newPlayer.goals) {
+        newPlayer.id = nextPlayerid++;
+        players.push(newPlayer);
+        res.send(newPlayer);
+    } else {
+        res.status(400).send();
+    }  
 });
 
 //7 delete a player
 tigersRouter.delete('/:id', (req, res, next) => {
-    const deletedPlayer = players[req.params.id]
-    return delete deletedPlayer;
-    res.status(204).send();
+    const playerId =  Number(req.params.id);
+    const playerIndex = players.findIndex(player => playerId === player.id);
+    if (!playerIndex === -1) {
+        players.splice(playerIndex, 1);
+        res.status(204).send();
+    } else {
+        res.status(404).send();
+    }
 });
 
 module.exports = tigersRouter;
