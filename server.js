@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 const port = process.env.port || 4001;
 const bodyParser = require('body-parser');
-const lionsRouter = require('/routesRouters.js');
-const tigersRouter = require('/routesRouters.js');
+const lionsRouter = require('./routesRouters.js');
+const tigersRouter = require('./routesRouters.js');
 
 
 app.use(bodyParser.json());
