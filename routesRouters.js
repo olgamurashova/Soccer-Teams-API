@@ -2,8 +2,8 @@ const express = require('express');
 const tigersRouter = express.Router();
 const lionsRouter = express.Router();
 
-const {teamLions} = require('/teamLions.js');
-const {teamTigers} = require('/teamTigers.js');
+const {teamLions} = require('./teamLions.js');
+const {teamTigers} = require('./teamTigers.js');
 
 //teamLions
 
